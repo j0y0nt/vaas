@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import VaasAppBar from '../../components/AppBar/VaasAppBar.js';
 
 export default function LoginComponent({setUser}){
     const [signup, setSignup] = useState(false);
@@ -32,7 +33,9 @@ export default function LoginComponent({setUser}){
     
     return (
 	    <Container style={{margin: '5px',padding: '10px', width: '500px'}}>
-	    <Box style={{display:'flex', flexDirection: 'column', alignItems: 'center'}}>
+	    <VaasAppBar user={{}} />
+	    
+	    <Box style={{display:'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20px'}}>
 	    <Avatar>
 	    <LockOutlinedIcon />
 	    </Avatar>
