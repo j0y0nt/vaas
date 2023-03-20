@@ -7,7 +7,7 @@ export default function MainContainer() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="md">
+	<Container maxWidth="md" style={{display: 'flex', justifyContent: 'center'}}>
 	  <LoginComponent />
       </Container>
     </React.Fragment>

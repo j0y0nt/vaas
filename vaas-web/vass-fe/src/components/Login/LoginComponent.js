@@ -13,7 +13,7 @@ export default function LoginComponent(){
     const [signup, setSignup] = useState(false);
     
     return (
-	    <Container style={{margin: '5px',padding: '10px'}}>
+	    <Container style={{margin: '5px',padding: '10px', width: '500px'}}>
 	    <Box style={{display:'flex', flexDirection: 'column', alignItems: 'center'}}>
 	    <Avatar>
 	    <LockOutlinedIcon />
