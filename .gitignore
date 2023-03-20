@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/vaas-web/vass-fe/node_modules
+/vaas-web/vass-fe/.pnp
+/vaas-web/vass-fe/.pnp.js
+
+# testing
+/vaas-web/vass-fe/coverage
+
+# production
+/vaas-web/vass-fe/build
+
+# misc
+/vaas-web/vass-fe/.DS_Store
+/vaas-web/vass-fe/.env.local
+/vaas-web/vass-fe/.env.development.local
+/vaas-web/vass-fe/.env.test.local
+/vaas-web/vass-fe/.env.production.local
+
+/vaas-web/vass-fe/npm-debug.log*
+/vaas-web/vass-fe/yarn-debug.log*
+/vaas-web/vass-fe/yarn-error.log*
