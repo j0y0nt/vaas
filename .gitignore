@@ -21,3 +21,27 @@
 /vaas-web/vass-fe/npm-debug.log*
 /vaas-web/vass-fe/yarn-debug.log*
 /vaas-web/vass-fe/yarn-error.log*
+
+# dependencies
+/vsp-express-mysql/node_modules
+/vsp-express-mysql/.pnp
+/vsp-express-mysql/.pnp.js
+
+# testing
+/vsp-express-mysql/coverage
+
+# production
+/vsp-express-mysql/build
+
+# misc
+/vsp-express-mysql/.DS_Store
+/vsp-express-mysql/.env.local
+/vsp-express-mysql/.env.development.local
+/vsp-express-mysql/.env.test.local
+/vsp-express-mysql/.env.production.local
+
+/vsp-express-mysql/npm-debug.log*
+/vsp-express-mysql/yarn-debug.log*
+/vsp-express-mysql/yarn-error.log*
+
+
