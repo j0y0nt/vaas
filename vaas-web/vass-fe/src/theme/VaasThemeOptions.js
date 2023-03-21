@@ -8,5 +8,8 @@ export const vaasThemeOptions = {
     secondary: {
       main: '#f50057',
     },
+     background: {
+      default: '#ede8f7',
+    },  
   },
 };
