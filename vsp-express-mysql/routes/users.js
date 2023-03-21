@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../service/db.js');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -7,10 +8,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', (req, res, next) => {
-    console.log(req.body);
-    res.json(
-	{'success': true}
-    );
+    try {
+	db.registerUser(req.body, res);
+    } catch( err) {
+	console.log(err);
+    }
 })
 
 router.post('/info/:id', (req, res, next) => {
