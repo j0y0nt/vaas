@@ -9,11 +9,13 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from "react-router-dom";
+import { Link as RouterLink} from 'react-router-dom';
 
 export default function VaasAppBar({user, setUser}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate();
-    
+
+   
     const handleMenu = (event) => {
 	setAnchorEl(event.currentTarget);
     };
@@ -45,7 +47,7 @@ export default function VaasAppBar({user, setUser}) {
 		    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 			Vaas
 		    </Typography>
-		    {user.authorized && (
+		    {user && user.authorized && (
 			<div>
 			    <IconButton
 				size="large"
@@ -72,7 +74,9 @@ export default function VaasAppBar({user, setUser}) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			    >
-				<MenuItem onClick={handleClose}>Profile</MenuItem>
+				<MenuItem component={RouterLink} to="/profile" >
+				    Profile
+				</MenuItem>
 				<MenuItem onClick={handleLogout}>Logout</MenuItem>
 			    </Menu>
 			</div>

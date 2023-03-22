@@ -10,9 +10,8 @@ import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-import VaasAppBar from '../../components/AppBar/VaasAppBar.js';
 
-export default function LoginComponent({setUser}){
+export default function LoginComponent({user, setUser}){
     const [signup, setSignup] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -33,7 +32,6 @@ export default function LoginComponent({setUser}){
     
     return (
 	    <Container style={{margin: '5px',padding: '10px', width: '500px'}}>
-	    <VaasAppBar user={{}} />
 	    
 	    <Box style={{display:'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20px'}}>
 	    <Avatar>
@@ -68,7 +66,8 @@ export default function LoginComponent({setUser}){
 	       <Grid item xs={12}>
 	    <Box style={{width: '100%'}}>
             <FormControl style={{width: '100%'}}>
-	    <TextField id="outlined-basic" label="Confirm Password" variant="outlined" />
+		<TextField id="outlined-basic" label="Confirm Password"
+	    type="password" variant="outlined" />
 	    </FormControl>
 	    </Box>
             </Grid>

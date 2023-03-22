@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import LoginComponent from './Login/LoginComponent.js';
 import Home from './Home/Home.js';
+import VaasAppBar from './AppBar/VaasAppBar.js';
 
 export default function MainContainer() {
 
@@ -13,9 +14,14 @@ export default function MainContainer() {
     return (
 	<React.Fragment>
 	    <CssBaseline />
-	    <Container style={{display: 'flex', justifyContent: 'center'}}>
+	    <Container style={{
+			   display: 'flex',
+			   justifyContent: 'center',
+			   flexDirection: 'column'
+		       }}>
+		<VaasAppBar user={user} setUser={setUser} />
 		{ !user.authorized ?
-		  (<LoginComponent setUser={setUser} />)
+		  (<LoginComponent user={user} setUser={setUser} />)
 		  : (<Home user={user} setUser={setUser}/>) }
 	    </Container>
 	</React.Fragment>
