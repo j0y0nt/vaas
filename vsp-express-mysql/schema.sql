@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS 'vaas_vps';
+
 CREATE TABLE IF NOT EXISTS `vaas_vps`.`system_user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(40) NOT NULL,

@@ -6,8 +6,8 @@ const {
 const pool  = mysql.createPool({
     connectionLimit : 10,
     host: 'localhost',
-    user: 'vspuser',
-    password: 'abc123!@',
+    user: 'vspuser', // change this
+    password: 'abc123!@', //change this
     database: 'vaas_vps'
 });
 
