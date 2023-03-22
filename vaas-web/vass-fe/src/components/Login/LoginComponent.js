@@ -46,7 +46,7 @@ export default function LoginComponent({user, setUser}){
             <Grid item xs={12}>
 	    <Box style={{width: '100%'}}>
             <FormControl style={{width: '100%'}}>
-	    <TextField fullWidth  id="outlined-basic" label="Email"
+	    <TextField fullWidth  id="outlined-email" label="Email"
 	defaultValue={username}
 	variant="outlined" onChange={e => setUsername(e.target.value)}/>
 	    </FormControl>
@@ -56,7 +56,7 @@ export default function LoginComponent({user, setUser}){
             <Grid item xs={12}>
 	    <Box style={{width: '100%'}}>
             <FormControl style={{width: '100%'}}>
-	    <TextField id="outlined-basic" label="Password" defaultValue={password}
+	    <TextField id="outlined-pswd" label="Password" defaultValue={password}
 	type="password" variant="outlined" onChange={e => setPassword(e.target.value)}/>
 	    </FormControl>
 	    </Box>
@@ -66,7 +66,7 @@ export default function LoginComponent({user, setUser}){
 	       <Grid item xs={12}>
 	    <Box style={{width: '100%'}}>
             <FormControl style={{width: '100%'}}>
-		<TextField id="outlined-basic" label="Confirm Password"
+		<TextField id="outlined-cpswd" label="Confirm Password"
 	    type="password" variant="outlined" />
 	    </FormControl>
 	    </Box>

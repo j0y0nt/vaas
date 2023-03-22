@@ -28,6 +28,7 @@ export default function VaasAppBar({user, setUser}) {
 	setUser(state => {
 	    return {authorized: false}
 	});
+	handleClose();
 	navigate("/home", {replace: true});
     };
 
@@ -74,7 +75,8 @@ export default function VaasAppBar({user, setUser}) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			    >
-				<MenuItem component={RouterLink} to="/profile" >
+				<MenuItem onClick={handleClose}
+					  component={RouterLink} to="/profile" >
 				    Profile
 				</MenuItem>
 				<MenuItem onClick={handleLogout}>Logout</MenuItem>
