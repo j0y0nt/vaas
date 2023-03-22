@@ -4,9 +4,9 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
+import { VaasTextField } from '../../components/common/VaasComponents.js';
 
 export default function UserProfile() {
 
@@ -20,6 +20,7 @@ export default function UserProfile() {
 	primaryContact: '',
 	secondaryContact: '',
     });
+    console.log(userinfo);
     
     return (
 	    <Container style={{margin: '5px',padding: '10px'}}>
@@ -36,127 +37,49 @@ export default function UserProfile() {
 	    <form>
 
 	    <Grid container spacing={2}>
-
+	    
 	    <Grid item sm={12} md={4} xs={12}> 
-	    <Box style={{width: '100%', display: 'flex', flex: 1}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField  id="outlined-prefix" label="Prefix"
-	defaultValue={userinfo.firstname}
-	variant="outlined"
-	onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		prefix: e.target.value
-	    });}}
-	    />
-	    </FormControl>
-	    </Box>
+	    <VaasTextField field="prefix" label="Prefix" obj={userinfo}
+	updater={setUserInfo} />
             </Grid>
 	    <Grid item sm={4} md={8} />
 	    
 	    <Grid item sm={4} md={4} xs={12}>
-	    <Box style={{width: 'inherit'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField fullwidth  id="outlined-fn" label="Firstname"
-	defaultValue={userinfo.firstname}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		firstname: e.target.value
-	    });
-	}}/>
-	    </FormControl>
-	    </Box>
-            </Grid>
+	    <VaasTextField field="firstname" label="Firstname" obj={userinfo}
+	updater={setUserInfo} />
+	    </Grid>
 
-	    <Grid item md={4} md={4} xs={12}>
-	    <Box style={{width: '100%'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField  id="outlined-mn" label="Middlename"
-	defaultValue={userinfo.firstname}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		middlename: e.target.value
-	    });
-	}}/>
-	    </FormControl>
-	    </Box>
-            </Grid>
+	    <Grid item md={4} xs={12}>
+	    <VaasTextField field="middlename" label="Middlename" obj={userinfo}
+	updater={setUserInfo} />
+	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <Box style={{width: '100%'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField  id="outlined-ln" label="Lastname"
-	defaultValue={userinfo.firstname}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		lastname: e.target.value
-	    });
-	}}/>
-	    </FormControl>
-	    </Box>
-            </Grid>
+	    <VaasTextField field="lastname" label="Lastname" obj={userinfo}
+	updater={setUserInfo} />
+	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <Box style={{width: '100%'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField  id="outlined-sfx" label="Suffix"
-	defaultValue={userinfo.suffix}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		suffix: e.target.value
-	    });
-	}}/>
-	    </FormControl>
-	    </Box>
+	    <VaasTextField field="suffix" label="Suffix" obj={userinfo}
+	updater={setUserInfo} />
+	    
             </Grid>
 
 	    <Grid item xs={12} md={3}>
-	    <Box style={{width: '100%'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField  id="outlined-gender" label="Gender"
-	defaultValue={userinfo.gender}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		gender: e.target.value
-	    });
-	}}/>
-	    </FormControl>
-	    </Box>
+	    <VaasTextField field="gender" label="Gender" obj={userinfo}
+	updater={setUserInfo} />
             </Grid>
+	    
 	    <Grid item sm={0} md={12} />
 
 	    <Grid item xs={12} md={4}>
-	    <Box style={{width: '100%'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField  id="outlined-prm" label="Primary"
-	defaultValue={userinfo.primaryContact}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		primaryContact: e.target.value
-	    });}}/>
-	    </FormControl>
-	    </Box>
+	    <VaasTextField field="primaryContact" label="Primary Contact No." obj={userinfo}
+	updater={setUserInfo} />
             </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <Box style={{width: '100%'}}>
-            <FormControl style={{width: '100%'}}>
-	    <TextField id="outlined-sndry" label="Secondary"
-	defaultValue={userinfo.secondaryContact}
-	variant="outlined" onChange={e => {
-	    setUserInfo({
-		...userinfo,
-		secondaryContact: e.target.value
-	    });
-	}}/>
-	    </FormControl>
-	    </Box>
+	    <VaasTextField field="secondaryContact" label="Secondary Contact No."
+	obj={userinfo} updater={setUserInfo} />
             </Grid>
 
 	    <Grid item xs={12} md={12}>
