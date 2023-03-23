@@ -29,7 +29,7 @@ export default function VaasAppBar({user, setUser}) {
 	    return {authorized: false}
 	});
 	handleClose();
-	navigate("/home", {replace: true});
+	navigate("/", {replace: true});
     };
 
     return (
