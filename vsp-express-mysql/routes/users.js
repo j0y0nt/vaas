@@ -7,6 +7,14 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.post('/auth', (req, res, next) => {
+    try {
+	db.isAuthorized(req.body, res);
+    } catch( err) {
+	console.log(err);
+    }
+})
+
 router.post('/register', (req, res, next) => {
     try {
 	db.registerUser(req.body, res);

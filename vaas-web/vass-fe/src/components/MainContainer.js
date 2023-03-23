@@ -4,9 +4,7 @@ import {useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import LoginComponent from './Login/LoginComponent.js';
-import SignUpComponent from './Signup/SignUpComponent.js';
 
-import Home from './Home/Home.js';
 import VaasAppBar from './AppBar/VaasAppBar.js';
 import {Outlet, useLocation } from 'react-router-dom';
 
@@ -24,9 +22,10 @@ export default function MainContainer() {
 			   flexDirection: 'column'
 		       }}>
 		<VaasAppBar user={user} setUser={setUser} />
-		{ pathname !== "/signup" &&
+		{ pathname === "/" &&
 		  (<LoginComponent user={user} setUser={setUser} />)
 		}
+		
 		<Outlet />
 	    </Container>
 	</React.Fragment>

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
@@ -16,9 +16,7 @@ import { useFormik } from 'formik';
 import { client } from '../../Api.js';
 
 export default function SignupComponent({user, setUser}){
-    
-    const [signup, setSignup] = useState(false);
-    
+        
     const navigate = useNavigate();
 
     const validate = values => {
@@ -62,10 +60,8 @@ export default function SignupComponent({user, setUser}){
     });
     
     function registerUser(userInfo) {
-	console.log(userInfo);
 	delete userInfo["confirm_password"];
 	userInfo.username = "user1234";
-	console.log(userInfo);
 	client.post('/users/register', userInfo)
 	    .then(function (response) {
 		console.log(response);

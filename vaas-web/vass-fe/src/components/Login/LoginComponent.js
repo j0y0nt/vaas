@@ -13,9 +13,10 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
+import { client } from '../../Api.js';
 
 export default function LoginComponent({user, setUser}){
-    const [signup, setSignup] = useState(false);
+    const [, setSignup] = useState(false);
     
     const navigate = useNavigate();
 
@@ -48,13 +49,26 @@ export default function LoginComponent({user, setUser}){
     });
     
     function handleLogin(userInfo) {
-	
-	setUser(state => {
-	    const user = Object.assign({}, state);
-	    user['authorized'] = true;
-	    user['email'] = userInfo.email;
-	    return user;
-	});
+	client.post('/users/auth', userInfo)
+	    .then(function (response) {
+		setUser(state => {
+		    const user = Object.assign({}, state);
+		    user['authorized'] = response.data.authorized;
+		    user['email'] = userInfo.email;
+		    return user;
+		});
+	    })
+	    .catch(function (error) {
+		//console.log(error);
+		setUser(state => {
+		    const user = Object.assign({}, state);
+		    user['authorized'] = false;
+		    user['email'] = userInfo.email;
+		    return user;
+		});
+		
+		navigate("/", {replace: true});
+	    });
 	navigate("/home", {replace: true});
     }
 
@@ -71,7 +85,7 @@ export default function LoginComponent({user, setUser}){
 	    <LockOutlinedIcon />
 	    </Avatar>
 	    <Typography variant="h5" gutterBottom>
-            { signup? 'Signup' : 'Login' }
+            Login
 	</Typography>
 	    
 	    <form onSubmit={formik.handleSubmit}>

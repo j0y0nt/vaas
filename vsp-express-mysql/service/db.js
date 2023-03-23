@@ -8,7 +8,8 @@ const pool  = mysql.createPool({
     host: 'localhost',
     user: 'vspuser', // change this
     password: 'abc123!@', //change this
-    database: 'vaas_vps'
+    database: 'vaas_vps',
+    //debug: ['ComQueryPacket', 'RowDataPacket']
 });
 
 /**
@@ -35,6 +36,54 @@ function getColumnName(msg) {
 	let endIndex = msg.indexOf(" doesn't have a default value");
 	let sub = msg.substring(beginIdx, endIndex);
 	return sub;
+    }
+}
+
+/**
+ * Register new user.
+ */
+function isAuthorized(userInfo, response){
+    let result = {};
+    const pw = encodePassword(userInfo.password);
+    var userQuery = "SELECT `email`, `password` FROM `system_user` WHERE `email` = ?";
+    try {
+	pool.getConnection(function(err, connection) {
+	
+	if (err) throw err; // not connected!
+ 
+	// Use the connection
+	connection.query(
+	    userQuery,
+	    [userInfo.email],
+	    function (error, results, fields) {
+		if(error){
+		    if(error.code === 'ER_DUP_ENTRY') {
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' value must be unique.';
+			response.json(result);		    
+		    } else if(error.code === 'ER_BAD_FIELD_ERROR'){
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' invalid property.';
+			response.json(result);		    
+		    }
+		} else {
+		    result.authorized = (results[0].email === userInfo.email &&
+					 results[0].password === pw);
+		    response.json(result);
+		}
+
+		// Release the connection.
+		connection.release();
+		
+		// Handle error after the release.
+		if (error) {
+		    console.log("Error while registing user " + error);
+		}
+		
+	    });
+	});
+    } catch(error) {
+	console.log(error);
     }
 }
 
@@ -149,4 +198,4 @@ function saveUserInfo(userInfo, response){
 
 module.exports.registerUser = registerUser;
 module.exports.saveUserInfo = saveUserInfo;
- 
+module.exports.isAuthorized = isAuthorized;
