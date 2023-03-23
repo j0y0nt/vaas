@@ -29,7 +29,7 @@ export default function Home({user, setUser}) {
 		    justifyContent: 'center',
 		    alignItems: 'center',
 		}}>
-		    <Typography variant="h5" gutterBottom>
+		    <Typography variant="h6" gutterBottom>
 		    Hello {user.name}!
 		</Typography>
 		    </Paper>

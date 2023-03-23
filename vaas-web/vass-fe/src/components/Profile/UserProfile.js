@@ -1,5 +1,5 @@
 import {useState} from 'react';
-
+//import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,21 +7,32 @@ import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import { VaasTextField } from '../../components/common/VaasComponents.js';
+import { client } from '../../Api.js';
 
 export default function UserProfile() {
-
+    
     const [userinfo, setUserInfo] = useState({
-	firstname: '',
-	middlename: '',
-	lastname: '',
+	first_name: '',
+	middle_name: '',
+	last_name: '',
 	prefix: '',
 	suffix: '',
 	gender: '',
-	primaryContact: '',
-	secondaryContact: '',
+	primary_contact: '',
+	secondary_contact: '',
     });
     console.log(userinfo);
     
+    function updateUserInfo(e) {
+	 client.post('/users/info', userinfo)
+	    .then(function (response) {
+		console.log(response);
+	    })
+	    .catch(function (error) {
+		console.log(error);
+	    });
+    }
+
     return (
 	    <Container style={{margin: '5px',padding: '10px'}}>
 	    
@@ -45,17 +56,17 @@ export default function UserProfile() {
 	    <Grid item sm={4} md={8} />
 	    
 	    <Grid item sm={4} md={4} xs={12}>
-	    <VaasTextField field="firstname" label="Firstname" obj={userinfo}
+	    <VaasTextField field="first_name" label="Firstname" obj={userinfo}
 	updater={setUserInfo} />
 	    </Grid>
 
 	    <Grid item md={4} xs={12}>
-	    <VaasTextField field="middlename" label="Middlename" obj={userinfo}
+	    <VaasTextField field="middle_name" label="Middlename" obj={userinfo}
 	updater={setUserInfo} />
 	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="lastname" label="Lastname" obj={userinfo}
+	    <VaasTextField field="last_name" label="Lastname" obj={userinfo}
 	updater={setUserInfo} />
 	    </Grid>
 
@@ -73,19 +84,19 @@ export default function UserProfile() {
 	    <Grid item sm={0} md={12} />
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="primaryContact" label="Primary Contact No." obj={userinfo}
+	    <VaasTextField field="primary_contact" label="Primary Contact No." obj={userinfo}
 	updater={setUserInfo} />
             </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="secondaryContact" label="Secondary Contact No."
+	    <VaasTextField field="secondary_contact" label="Secondary Contact No."
 	obj={userinfo} updater={setUserInfo} />
             </Grid>
 
 	    <Grid item xs={12} md={12}>
 	    <Box>
             <FormControl>
-	    <Button variant="contained">Register</Button>
+	    <Button variant="contained" onClick={e =>updateUserInfo(e)} >Save</Button>
 	</FormControl>
 	    </Box>
             </Grid>

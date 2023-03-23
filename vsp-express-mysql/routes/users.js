@@ -15,12 +15,12 @@ router.post('/register', (req, res, next) => {
     }
 })
 
-router.post('/info/:id', (req, res, next) => {
-    console.log(req.params);
-    console.log(req.body);
-    res.json(
-	{'success': true}
-    );
+router.post('/info/', (req, res, next) => {
+    try {
+	db.saveUserInfo(req.body, res);
+    } catch(err) {
+	console.log('Error while saving user info: ' + err);
+    }
 })
 
 router.post('/address/:id', (req, res, next) => {
