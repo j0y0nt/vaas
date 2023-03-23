@@ -13,8 +13,10 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
+import { client } from '../../Api.js';
 
-export default function LoginComponent({user, setUser}){
+export default function SignupComponent({user, setUser}){
+    
     const [signup, setSignup] = useState(false);
     
     const navigate = useNavigate();
@@ -34,6 +36,17 @@ export default function LoginComponent({user, setUser}){
 	} else if (values.password.length < 8) {
 	    errors.password = 'Must be 8 characters or more';
 	}
+
+	if (!values.confirm_password) {
+	    errors.password = 'Password is required';
+	} else if (values.confirm_password.length < 8) {
+	    errors.password = 'Must be 8 characters or more';
+	}
+
+	if (values.confirm_password !== values.password) {
+	    errors.password = 'Password and Confirm password value must be same.';
+	}
+
 	return errors;
     };
 
@@ -41,26 +54,26 @@ export default function LoginComponent({user, setUser}){
 	
 	initialValues: {
 	    email: '',
-	    password: ''
+	    password: '',
+	    confirm_password: '',
 	},
 	validate,
-	onSubmit: values => handleLogin(values),
+	onSubmit: values => registerUser(values),
     });
     
-    function handleLogin(userInfo) {
-	
-	setUser(state => {
-	    const user = Object.assign({}, state);
-	    user['authorized'] = true;
-	    user['email'] = userInfo.email;
-	    return user;
-	});
+    function registerUser(userInfo) {
+	console.log(userInfo);
+	delete userInfo["confirm_password"];
+	userInfo.username = "user1234";
+	console.log(userInfo);
+	client.post('/users/register', userInfo)
+	    .then(function (response) {
+		console.log(response);
+	    })
+	    .catch(function (error) {
+		console.log(error);
+	    });
 	navigate("/home", {replace: true});
-    }
-
-    function handleSignup(e) {
-	setSignup(signup => !signup);
-	navigate('signup', {replacE: true});
     }
     
     return (
@@ -71,17 +84,17 @@ export default function LoginComponent({user, setUser}){
 	    <LockOutlinedIcon />
 	    </Avatar>
 	    <Typography variant="h5" gutterBottom>
-            { signup? 'Signup' : 'Login' }
+            Signup
 	</Typography>
 	    
-	    <form onSubmit={formik.handleSubmit}>
+	    <form onSubmit={formik.handleSubmit} autoComplete="off">
 	    <Grid container spacing={2}>
             <Grid item xs={12}>
 	    <Box style={{width: '100%'}}>
             <FormControl style={{width: '100%'}}>
 	    
 	    <TextField fullWidth  id="outlined-email" label="Email"
-	type="email" required  name="email"
+	type="email" required  name="email" autoComplete="off"
 	onChange={formik.handleChange} value={formik.values.email}
 	variant="outlined" />
 	    
@@ -110,13 +123,31 @@ export default function LoginComponent({user, setUser}){
 	    </FormControl>
 	    </Box>
             </Grid>
-
+	    
+	       <Grid item xs={12}>
+	    <Box style={{width: '100%'}}>
+            <FormControl style={{width: '100%'}}>
+		<TextField id="outlined-cpswd" label="Confirm Password"
+	    onChange={formik.handleChange}
+	    name="confirm_password"
+            value={formik.values.confirm_password}
+	    type="password" variant="outlined" />
+		{formik.errors.confirm_password ?
+		 <FormHelperText error id="my-helper-text">
+		 {formik.errors.confirm_password}
+		 </FormHelperText>
+		 : null}
+	    
+	    </FormControl>
+	    </Box>
+            </Grid>
+	
 	    <>
 	    <Grid item xs={6}>
 	    <Box style={{width: '100%'}}>
 	    <FormControl style={{width: '100%'}}>
-		<Button variant="contained" type="submit"
-	    >Login</Button>
+	    <Button variant="contained" type="submit"
+	onClick={e => 	navigate('/', {replacE: true})}>Cancel</Button>
 	    </FormControl>
 	    </Box>
             </Grid>
@@ -124,14 +155,15 @@ export default function LoginComponent({user, setUser}){
 	    <Grid item xs={6}>
 	    <Box style={{width: '100%'}}>
 	    <FormControl style={{width: '100%'}}>
-	    <Button variant="contained" onClick={e => handleSignup(e) }>SIGNUP</Button>
+	    <Button variant="contained" type="submit">Register</Button>
 	    </FormControl>
 	    </Box>
-	    </Grid>
-	    </>
+		</Grid>
+		</>
+	
 	    </Grid>
 	    </form>
-	    </Box>
-	    </Container>
+	</Box>
+	</Container>
     );
 }
