@@ -278,8 +278,5 @@ function updateUserInfo(userInfo, response){
     }
 }
 
-module.exports.registerUser = registerUser;
-module.exports.saveUserInfo = saveUserInfo;
-module.exports.isAuthorized = isAuthorized;
-module.exports.getUserInfo = getUserInfo;
-module.exports.updateUserInfo = updateUserInfo;
+
+module.exports = {registerUser, saveUserInfo, isAuthorized, getUserInfo, updateUserInfo };

@@ -20,7 +20,7 @@ export default function UserProfile() {
 	primary_contact: '',
 	secondary_contact: '',
     };
-    
+
     const [userInfo, setUserInfo] = useState(userProfile);
     //console.log(userinfo);
 
