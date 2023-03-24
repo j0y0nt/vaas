@@ -39,6 +39,20 @@ function getColumnName(msg) {
     }
 }
 
+function handleError(err) {
+    let errorMessage = '';
+    if(error.code === 'ER_DUP_ENTRY') {
+	let errColName = getColumnName(error.sqlMessage);
+	errorMessage = errColName + ' value must be unique.';
+    } else if(error.code === 'ER_BAD_FIELD_ERROR'){
+	let errColName = getColumnName(error.sqlMessage);
+	errorMessage = errColName + ' invalid property.';
+    }  else if(error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
+	let errColName = getColumnName(error.sqlMessage);
+	errorMessage = errColName + ' invalid property.';
+    }
+    return errorMessage;
+}
 /**
  * Register new user.
  */
@@ -57,15 +71,9 @@ function isAuthorized(userInfo, response){
 	    [userInfo.email],
 	    function (error, results, fields) {
 		if(error){
-		    if(error.code === 'ER_DUP_ENTRY') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' value must be unique.';
-			response.json(result);		    
-		    } else if(error.code === 'ER_BAD_FIELD_ERROR'){
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    }
+		    result.error = handleError(error);
+		    response.json(result);
+		    
 		} else {
 		    result.authorized = (results[0].email === userInfo.email &&
 					 results[0].password === pw);
@@ -107,15 +115,8 @@ function registerUser(userInfo, response){
 		//console.log(error);
 
 		if(error){
-		    if(error.code === 'ER_DUP_ENTRY') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' value must be unique.';
-			response.json(result);		    
-		    } else if(error.code === 'ER_BAD_FIELD_ERROR'){
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    }
+		    result.error = handleError(error);
+		    response.json(result);
 		} else {
 		    if(results.affectedRows === 1) {
 			result.insertId = results.insertId;
@@ -161,19 +162,9 @@ function getUserInfo(userId, response){
 		//console.log(error);
 
 		if(error) {
-		    if(error.code === 'ER_DUP_ENTRY') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' value must be unique.';
-			response.json(result);		    
-		    }else if(error.code === 'ER_BAD_FIELD_ERROR'){
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    } else if(error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    }
+		    result.error = handleError(error);
+		    response.json(result);
+
 		} else {
 		    // Success.
 		    console.log(result);
@@ -217,19 +208,8 @@ function saveUserInfo(userInfo, response){
 		//console.log(error);
 
 		if(error) {
-		    if(error.code === 'ER_DUP_ENTRY') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' value must be unique.';
-			response.json(result);		    
-		    }else if(error.code === 'ER_BAD_FIELD_ERROR'){
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    } else if(error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    }
+		    result.error = handleError(error);
+		    response.json(result);
 		} else {
 		    // Success.
 		    // console.log(result);
@@ -272,19 +252,8 @@ function updateUserInfo(userInfo, response){
 		//console.log(error);
 
 		if(error) {
-		    if(error.code === 'ER_DUP_ENTRY') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' value must be unique.';
-			response.json(result);		    
-		    }else if(error.code === 'ER_BAD_FIELD_ERROR'){
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    } else if(error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
-			let errColName = getColumnName(error.sqlMessage);
-			result.error = errColName + ' invalid property.';
-			response.json(result);		    
-		    }
+		    result.error = handleError(error);
+		    response.json(result);
 		} else {
 		    // Success.
 		    // console.log(result);
