@@ -42,7 +42,7 @@ export default function UserProfile() {
     }, []);
     
     function updateUserInfo(e) {
-	 client.post('/users/info', userInfo)
+	 client.put('/users/info', userInfo)
 	    .then(function (response) {
 		console.log(response);
 	    })

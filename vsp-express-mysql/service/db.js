@@ -143,7 +143,10 @@ function registerUser(userInfo, response){
  */
 function getUserInfo(userId, response){
     let result = {};
-    var insertQuery = 'SELECT * FROM `userinfo` WHERE user_id = ?';
+    var insertQuery = 'SELECT id, first_name, middle_name, last_name, prefix, suffix, gender,' +
+	' primary_contact, secondary_contact, user_id' +
+	' FROM userinfo WHERE user_id = ?;'
+
     //userInfo.tenant_id = 1;
     try {
 	pool.getConnection(function(err, connection) {
@@ -251,7 +254,63 @@ function saveUserInfo(userInfo, response){
     }
 }
 
+function updateUserInfo(userInfo, response){
+    let result = {};
+    var updateQuery = 'UPDATE `userinfo` SET ? WHERE ID = ?';
+    userInfo.tenant_id = 1;
+    userInfo.user_id = 1;
+    try {
+	pool.getConnection(function(err, connection) {
+	
+	if (err) throw err; // not connected!
+ 
+	// Use the connection
+	connection.query(
+	    updateQuery,
+	    [userInfo, userInfo.id],
+	    function (error, results, fields) {
+		//console.log(error);
+
+		if(error) {
+		    if(error.code === 'ER_DUP_ENTRY') {
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' value must be unique.';
+			response.json(result);		    
+		    }else if(error.code === 'ER_BAD_FIELD_ERROR'){
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' invalid property.';
+			response.json(result);		    
+		    } else if(error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' invalid property.';
+			response.json(result);		    
+		    }
+		} else {
+		    // Success.
+		    // console.log(result);
+		    if(results.affectedRows === 1) {
+			result.insertId = results.insertId;
+		    }
+		    response.json(result);
+		}
+
+		// Release the connection.
+		connection.release();
+		
+		// Handle error after the release.
+		if (error) {
+		    console.log("Error while registing user " + error);
+		}
+		
+	    });
+	});
+    } catch(error) {
+	console.log(error);
+    }
+}
+
 module.exports.registerUser = registerUser;
 module.exports.saveUserInfo = saveUserInfo;
 module.exports.isAuthorized = isAuthorized;
 module.exports.getUserInfo = getUserInfo;
+module.exports.updateUserInfo = updateUserInfo;
