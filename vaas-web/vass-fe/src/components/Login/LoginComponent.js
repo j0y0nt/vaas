@@ -51,12 +51,14 @@ export default function LoginComponent({user, setUser}){
     function handleLogin(userInfo) {
 	client.post('/users/auth', userInfo)
 	    .then(function (response) {
+		console.log(response);
 		setUser(state => {
 		    const user = Object.assign({}, state);
 		    user['authorized'] = response.data.authorized;
 		    user['email'] = userInfo.email;
 		    return user;
 		});
+		navigate("/home", {replace: true});
 	    })
 	    .catch(function (error) {
 		//console.log(error);
@@ -69,7 +71,7 @@ export default function LoginComponent({user, setUser}){
 		
 		navigate("/", {replace: true});
 	    });
-	navigate("/home", {replace: true});
+	
     }
 
     function handleSignup(e) {

@@ -141,6 +141,61 @@ function registerUser(userInfo, response){
 /**
  * Register new user.
  */
+function getUserInfo(userId, response){
+    let result = {};
+    var insertQuery = 'SELECT * FROM `userinfo` WHERE user_id = ?';
+    //userInfo.tenant_id = 1;
+    try {
+	pool.getConnection(function(err, connection) {
+	
+	if (err) throw err; // not connected!
+ 
+	// Use the connection
+	connection.query(
+	    insertQuery,
+	    [userId],
+	    function (error, results, fields) {
+		//console.log(error);
+
+		if(error) {
+		    if(error.code === 'ER_DUP_ENTRY') {
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' value must be unique.';
+			response.json(result);		    
+		    }else if(error.code === 'ER_BAD_FIELD_ERROR'){
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' invalid property.';
+			response.json(result);		    
+		    } else if(error.code === 'ER_NO_DEFAULT_FOR_FIELD') {
+			let errColName = getColumnName(error.sqlMessage);
+			result.error = errColName + ' invalid property.';
+			response.json(result);		    
+		    }
+		} else {
+		    // Success.
+		    console.log(result);
+		    response.json(results[0]);
+		}
+
+		// Release the connection.
+		connection.release();
+		
+		// Handle error after the release.
+		if (error) {
+		    console.log("Error while registing user " + error);
+		}
+		
+	    });
+	});
+    } catch(error) {
+	console.log(error);
+    }
+}
+
+
+/**
+ * Register new user.
+ */
 function saveUserInfo(userInfo, response){
     let result = {};
     var insertQuery = 'INSERT INTO `userinfo` SET ?';
@@ -199,3 +254,4 @@ function saveUserInfo(userInfo, response){
 module.exports.registerUser = registerUser;
 module.exports.saveUserInfo = saveUserInfo;
 module.exports.isAuthorized = isAuthorized;
+module.exports.getUserInfo = getUserInfo;

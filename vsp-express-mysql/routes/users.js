@@ -23,6 +23,14 @@ router.post('/register', (req, res, next) => {
     }
 })
 
+router.get('/info/:userId', (req, res, next) => {
+    try {
+	db.getUserInfo(Number(req.params.userId), res);
+    } catch(err) {
+	console.log('Error while saving user info: ' + err);
+    }
+})
+
 router.post('/info/', (req, res, next) => {
     try {
 	db.saveUserInfo(req.body, res);

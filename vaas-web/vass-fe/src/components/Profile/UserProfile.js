@@ -1,5 +1,5 @@
 import {useState} from 'react';
-//import { useEffect } from 'react';
+import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -10,8 +10,7 @@ import { VaasTextField } from '../../components/common/VaasComponents.js';
 import { client } from '../../Api.js';
 
 export default function UserProfile() {
-    
-    const [userinfo, setUserInfo] = useState({
+    const userProfile = {
 	first_name: '',
 	middle_name: '',
 	last_name: '',
@@ -20,11 +19,30 @@ export default function UserProfile() {
 	gender: '',
 	primary_contact: '',
 	secondary_contact: '',
-    });
-    console.log(userinfo);
+    };
+    
+    const [userInfo, setUserInfo] = useState(userProfile);
+    //console.log(userinfo);
+
+    useEffect(() => {
+	let ignore = false;
+	setUserInfo(userProfile);
+	client.get('/users/info/1')
+	    .then(function (response) {
+		if (!ignore) {
+		    setUserInfo(response.data);
+		}
+	    })
+	    .catch(function (error) {
+		console.log(error);
+	    });
+	return () => {
+	    ignore = true;
+	}
+    }, []);
     
     function updateUserInfo(e) {
-	 client.post('/users/info', userinfo)
+	 client.post('/users/info', userInfo)
 	    .then(function (response) {
 		console.log(response);
 	    })
@@ -50,47 +68,47 @@ export default function UserProfile() {
 	    <Grid container spacing={2}>
 	    
 	    <Grid item sm={12} md={4} xs={12}> 
-	    <VaasTextField field="prefix" label="Prefix" obj={userinfo}
+	    <VaasTextField field="prefix" label="Prefix" obj={userInfo}
 	updater={setUserInfo} />
             </Grid>
 	    <Grid item sm={4} md={8} />
 	    
 	    <Grid item sm={4} md={4} xs={12}>
-	    <VaasTextField field="first_name" label="Firstname" obj={userinfo}
-	updater={setUserInfo} />
+	    <VaasTextField field="first_name" label="Firstname" obj={userInfo}
+	updater={setUserInfo} defaultValue={userInfo.first_name}/>
 	    </Grid>
 
 	    <Grid item md={4} xs={12}>
-	    <VaasTextField field="middle_name" label="Middlename" obj={userinfo}
+	    <VaasTextField field="middle_name" label="Middlename" obj={userInfo}
 	updater={setUserInfo} />
 	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="last_name" label="Lastname" obj={userinfo}
+	    <VaasTextField field="last_name" label="Lastname" obj={userInfo}
 	updater={setUserInfo} />
 	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="suffix" label="Suffix" obj={userinfo}
+	    <VaasTextField field="suffix" label="Suffix" obj={userInfo}
 	updater={setUserInfo} />
 	    
             </Grid>
 
 	    <Grid item xs={12} md={3}>
-	    <VaasTextField field="gender" label="Gender" obj={userinfo}
+	    <VaasTextField field="gender" label="Gender" obj={userInfo}
 	updater={setUserInfo} />
             </Grid>
 	    
 	    <Grid item sm={0} md={12} />
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="primary_contact" label="Primary Contact No." obj={userinfo}
+	    <VaasTextField field="primary_contact" label="Primary Contact No." obj={userInfo}
 	updater={setUserInfo} />
             </Grid>
 
 	    <Grid item xs={12} md={4}>
 	    <VaasTextField field="secondary_contact" label="Secondary Contact No."
-	obj={userinfo} updater={setUserInfo} />
+	obj={userInfo} updater={setUserInfo} />
             </Grid>
 
 	    <Grid item xs={12} md={12}>
