@@ -22,13 +22,13 @@ export const VaasTextField = ({field, label, obj, updater, defaultValue}) => {
     )
 }
 
-export const VassFormikTextField = ({field, label, value, onChangeHandler}) => {
+export const VassFormikTextField = ({field, label, value, required, onChangeHandler}) => {
     
     return (
 	    <Box style={{width: '100%', display: 'flex', flex: 1}}>
             <FormControl style={{width: '100%'}}>
 	    <TextField fullWidth  id={'outlined-' + field} label={label}
-	type="text" name={field}
+	type="text" name={field} required={required}
 	onChange={onChangeHandler} value={value}
 	variant="outlined" />
 	    </FormControl>

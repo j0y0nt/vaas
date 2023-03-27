@@ -112,6 +112,7 @@ export default function UserProfile() {
 	    
 	<VassFormikTextField fullWidth  field="first_name" label="Firstname"
 	onChangeHandler={formik.handleChange} value={formik.values.first_name}
+	required={true}
 	/>
 
 	{formik.errors.first_name  ?
@@ -130,8 +131,14 @@ export default function UserProfile() {
 
 	    <Grid item xs={12} md={4}>
 	    <VassFormikTextField fullWidth  field="last_name" label="Lastname"
+	required={true}
 	onChangeHandler={formik.handleChange} value={formik.values.last_name}
 	    />
+	    {formik.errors.last_name  ?
+	     <FormHelperText error id="my-helper-text">
+	     {formik.errors.last_name}
+	     </FormHelperText>
+	     :null}
 	    </Grid>
 
 	    <Grid item xs={12} md={4}>
@@ -149,9 +156,14 @@ export default function UserProfile() {
 	    <Grid item sm={0} md={12} />
 
 	    <Grid item xs={12} md={4}>
-	    <VassFormikTextField fullWidth  field="primary_contact" label="Primary Contact No."
+	    <VassFormikTextField fullWidth  field="primary_contact" required={true} label="Primary Contact No."
 	onChangeHandler={formik.handleChange} value={formik.values.primary_contact}
-	/>
+	    />
+	    {formik.errors.primary_contact  ?
+	     <FormHelperText error id="my-helper-text">
+	     {formik.errors.primary_contact}
+	     </FormHelperText>
+	     :null}
             </Grid>
 
 	    <Grid item xs={12} md={4}>
