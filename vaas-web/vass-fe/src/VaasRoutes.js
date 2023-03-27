@@ -4,6 +4,7 @@ import ErrorPage from "./ErrorPage";
 import Home from './components/Home/Home.js';
 import UserProfile from './components/Profile/UserProfile.js';
 import Signup from './components/Signup/SignUpComponent.js';
+import VspDashboard from './components/Vsp/VspDashboard.js';
 
 export const router = createBrowserRouter([
     {
@@ -14,6 +15,12 @@ export const router = createBrowserRouter([
 	    {
 		path: "home/",
 		element: <Home />,
+		children: [
+		    {
+			index: true,
+			element: <VspDashboard />,
+		    },
+		],
 	    },
 	    {
 		path: "signup",
