@@ -5,9 +5,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
-import { VaasTextField } from '../../components/common/VaasComponents.js';
+import { VaasTextField, VassFormikTextField}from '../../components/common/VaasComponents.js';
 import { client } from '../../Api.js';
+import { useFormik } from 'formik';
 
 export default function UserProfile() {
     const userProfile = {
@@ -22,8 +24,40 @@ export default function UserProfile() {
     };
 
     const [userInfo, setUserInfo] = useState(userProfile);
-    //console.log(userinfo);
 
+    const validate = values => {
+	
+	const errors = {};
+	
+	if (!values.first_name) {
+	    errors.first_name = 'First name is required.';
+	} else if (values.first_name.length > 40) {
+	    errors.first_name = 'Must be 40 characters or less';	    
+	}
+
+	if (!values.last_name) {
+	    errors.last_name = 'Required';
+	} else if (values.last_name.length > 40) {
+	    errors.last_name = 'Must be 40 characters or less';    
+	}
+
+	if (!values.primary_contact) {
+	    errors.primary_contact = 'Required';
+	} else if (values.primary_contact.length > 20) {
+	    errors.last_name = 'Must be 20 characters or less';    
+	}
+
+	return errors;
+
+    };
+    
+    const formik = useFormik({
+	enableReinitialize: true,
+	initialValues: userInfo,
+	validate,
+	onSubmit: values => updateUserInfo(values),
+    });
+    
     useEffect(() => {
 	let ignore = false;
 	setUserInfo(userProfile);
@@ -42,9 +76,10 @@ export default function UserProfile() {
     }, []);
     
     function updateUserInfo(e) {
-	 client.put('/users/info', userInfo)
+	console.log('here');
+	 client.put('/users/info/1', userInfo)
 	    .then(function (response) {
-		console.log(response);
+		setUserInfo(response.data);
 	    })
 	    .catch(function (error) {
 		console.log(error);
@@ -63,58 +98,72 @@ export default function UserProfile() {
 
 	    <Box style={{display:'flex',  alignItems: 'center', paddingTop: '20px'}}>
 
-	    <form>
+	    <form onSubmit={formik.handleSubmit}>
 
 	    <Grid container spacing={2}>
 	    
-	    <Grid item sm={12} md={4} xs={12}> 
+	    <Grid item sm={12} md={4} xs={12}>	    
 	    <VaasTextField field="prefix" label="Prefix" obj={userInfo}
 	updater={setUserInfo} />
             </Grid>
 	    <Grid item sm={4} md={8} />
 	    
 	    <Grid item sm={4} md={4} xs={12}>
-	    <VaasTextField field="first_name" label="Firstname" obj={userInfo}
-	updater={setUserInfo} defaultValue={userInfo.first_name}/>
+	    
+	<VassFormikTextField fullWidth  field="first_name" label="Firstname"
+	onChangeHandler={formik.handleChange} value={formik.values.first_name}
+	/>
+
+	{formik.errors.first_name  ?
+	    <FormHelperText error id="my-helper-text">
+	    {formik.errors.first_name}
+	</FormHelperText>
+	    : null}
+    
 	    </Grid>
 
 	    <Grid item md={4} xs={12}>
-	    <VaasTextField field="middle_name" label="Middlename" obj={userInfo}
-	updater={setUserInfo} />
+	    <VassFormikTextField fullWidth  field="middle_name" label="Middlename"
+	onChangeHandler={formik.handleChange} value={formik.values.middle_name}
+	    />
 	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="last_name" label="Lastname" obj={userInfo}
-	updater={setUserInfo} />
+	    <VassFormikTextField fullWidth  field="last_name" label="Lastname"
+	onChangeHandler={formik.handleChange} value={formik.values.last_name}
+	    />
 	    </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="suffix" label="Suffix" obj={userInfo}
-	updater={setUserInfo} />
-	    
+	    <VassFormikTextField fullWidth  field="suffix" label="Suffix"
+	onChangeHandler={formik.handleChange} value={formik.values.suffix}
+	/>	    
             </Grid>
 
 	    <Grid item xs={12} md={3}>
-	    <VaasTextField field="gender" label="Gender" obj={userInfo}
-	updater={setUserInfo} />
+	    <VassFormikTextField fullWidth  field="gender" label="Gender"
+	onChangeHandler={formik.handleChange} value={formik.values.gender}
+	/>
             </Grid>
 	    
 	    <Grid item sm={0} md={12} />
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="primary_contact" label="Primary Contact No." obj={userInfo}
-	updater={setUserInfo} />
+	    <VassFormikTextField fullWidth  field="primary_contact" label="Primary Contact No."
+	onChangeHandler={formik.handleChange} value={formik.values.primary_contact}
+	/>
             </Grid>
 
 	    <Grid item xs={12} md={4}>
-	    <VaasTextField field="secondary_contact" label="Secondary Contact No."
-	obj={userInfo} updater={setUserInfo} />
+	    <VassFormikTextField fullWidth  field="secondary_contact" label="Secondary Contact No."
+	onChangeHandler={formik.handleChange} value={formik.values.secondary_contact}
+	/>
             </Grid>
 
 	    <Grid item xs={12} md={12}>
 	    <Box>
             <FormControl>
-	    <Button variant="contained" onClick={e =>updateUserInfo(e)} >Save</Button>
+	    <Button variant="contained" type="submit" >Save</Button>
 	</FormControl>
 	    </Box>
             </Grid>
