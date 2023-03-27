@@ -260,7 +260,7 @@ function updateUserInfo(userInfo, response){
 		    if(results.affectedRows === 1) {
 			result.insertId = results.insertId;
 		    }
-		    response.json(result);
+		    //response.json(result);
 		}
 
 		// Release the connection.

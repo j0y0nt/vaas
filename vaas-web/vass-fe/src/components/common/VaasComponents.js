@@ -44,7 +44,10 @@ export const VassFormikSelectField = ({field, label, value, required, onChangeHa
             <FormControl style={{width: '100%'}}>
 	    <TextField fullWidth  id={'outlined-' + field} label={label}
 	type="text" name={field} required={required} select
-	onChange={onChangeHandler} value={value}
+	onChange={onChangeHandler} 
+	SelectProps={{
+            value: value
+          }}
 	variant="outlined">
 	    {options.map((option) => (
             <MenuItem key={option.value} value={option.value}>

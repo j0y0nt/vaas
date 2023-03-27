@@ -31,9 +31,10 @@ router.get('/info/:userId', (req, res, next) => {
     }
 })
 
-router.put('/info/', (req, res, next) => {
+router.put('/info/:userId', (req, res, next) => {
     try {
 	db.updateUserInfo(req.body, res);
+	db.getUserInfo(Number(req.params.userId), res);
     } catch(err) {
 	console.log('Error while saving user info: ' + err);
     }

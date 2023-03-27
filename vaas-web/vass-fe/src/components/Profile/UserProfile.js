@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
-import { VaasTextField, VassFormikTextField , VassFormikSelectField }from '../../components/common/VaasComponents.js';
+import { VassFormikTextField , VassFormikSelectField }from '../../components/common/VaasComponents.js';
 import { client } from '../../Api.js';
 import { useFormik } from 'formik';
 
@@ -25,14 +25,14 @@ export default function UserProfile() {
 
     const [userInfo, setUserInfo] = useState(userProfile);
 
-    const prefix =  [
+    const prefixes =  [
 	{
-	    value: 'Mr.',
-	    label: 'Mr.',
+	    value: 'Mr',
+	    label: 'Mr',
 	},
 	{
-	    value: 'Mrs.',
-	    label: 'Mrs.',
+	    value: 'Mrs',
+	    label: 'Mrs',
 	},
 	{
 	    value: 'Miss',
@@ -43,8 +43,8 @@ export default function UserProfile() {
 	    label: 'Mx',
 	},
 	{
-	    value: 'Dr.',
-	    label: 'Dr.',
+	    value: 'Dr',
+	    label: 'Dr',
 	},
 
     ];
@@ -115,10 +115,10 @@ export default function UserProfile() {
 	}
     }, []);
     
-    function updateUserInfo(e) {
-	console.log('here');
-	 client.put('/users/info/1', userInfo)
+    function updateUserInfo(userData) {
+	client.put('/users/info/1', userData)
 	    .then(function (response) {
+		setUserInfo(userProfile);
 		setUserInfo(response.data);
 	    })
 	    .catch(function (error) {
@@ -145,7 +145,7 @@ export default function UserProfile() {
 	    <Grid item sm={12} md={4} xs={12}>	    
 	    <VassFormikSelectField field="prefix" label="Prefix"
 	onChangeHandler={formik.handleChange} value={formik.values.prefix}
-	options={prefix}/>
+	options={prefixes}/>
             </Grid>
 	    <Grid item sm={4} md={8} />
 	    
