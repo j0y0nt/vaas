@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
-import { VaasTextField, VassFormikTextField}from '../../components/common/VaasComponents.js';
+import { VaasTextField, VassFormikTextField , VassFormikSelectField }from '../../components/common/VaasComponents.js';
 import { client } from '../../Api.js';
 import { useFormik } from 'formik';
 
@@ -24,6 +24,46 @@ export default function UserProfile() {
     };
 
     const [userInfo, setUserInfo] = useState(userProfile);
+
+    const prefix =  [
+	{
+	    value: 'Mr.',
+	    label: 'Mr.',
+	},
+	{
+	    value: 'Mrs.',
+	    label: 'Mrs.',
+	},
+	{
+	    value: 'Miss',
+	    label: 'Miss',
+	},
+	{
+	    value: 'Mx',
+	    label: 'Mx',
+	},
+	{
+	    value: 'Dr.',
+	    label: 'Dr.',
+	},
+
+    ];
+
+
+    const genders = [
+	{
+	    value: 'M',
+	    label: 'Male',
+	},
+	{
+	    value: 'F',
+	    label: 'Female',
+	},
+	{
+	    value: 'O',
+	    label: 'Other',
+	},
+    ];
 
     const validate = values => {
 	
@@ -103,8 +143,9 @@ export default function UserProfile() {
 	    <Grid container spacing={2}>
 	    
 	    <Grid item sm={12} md={4} xs={12}>	    
-	    <VaasTextField field="prefix" label="Prefix" obj={userInfo}
-	updater={setUserInfo} />
+	    <VassFormikSelectField field="prefix" label="Prefix"
+	onChangeHandler={formik.handleChange} value={formik.values.prefix}
+	options={prefix}/>
             </Grid>
 	    <Grid item sm={4} md={8} />
 	    
@@ -148,8 +189,9 @@ export default function UserProfile() {
             </Grid>
 
 	    <Grid item xs={12} md={3}>
-	    <VassFormikTextField fullWidth  field="gender" label="Gender"
+	    <VassFormikSelectField fullWidth  field="gender" label="Gender"
 	onChangeHandler={formik.handleChange} value={formik.values.gender}
+	options={genders}
 	/>
             </Grid>
 	    
