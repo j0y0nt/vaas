@@ -9,7 +9,7 @@ const pool  = mysql.createPool({
     user: 'vspuser', // change this
     password: 'abc123!@', //change this
     database: 'vaas_vps',
-    //debug: ['ComQueryPacket', 'RowDataPacket']
+    //debug: ['ComQueryPacket', 'RowDataPacket'] // Uncomment this line to view SQL queries
 });
 
 /**
@@ -112,7 +112,6 @@ function registerUser(userInfo, response){
 	    insertQuery,
 	    [pw, userInfo.email, userInfo.username],
 	    function (error, results, fields) {
-		//console.log(error);
 
 		if(error){
 		    result.error = handleError(error);
@@ -148,7 +147,6 @@ function getUserInfo(userId, response){
 	' primary_contact, secondary_contact, user_id' +
 	' FROM userinfo WHERE user_id = ?;'
 
-    //userInfo.tenant_id = 1;
     try {
 	pool.getConnection(function(err, connection) {
 	
@@ -159,7 +157,6 @@ function getUserInfo(userId, response){
 	    insertQuery,
 	    [userId],
 	    function (error, results, fields) {
-		//console.log(error);
 
 		if(error) {
 		    result.error = handleError(error);
@@ -205,14 +202,12 @@ function saveUserInfo(userInfo, response){
 	    insertQuery,
 	    userInfo,
 	    function (error, results, fields) {
-		//console.log(error);
 
 		if(error) {
 		    result.error = handleError(error);
 		    response.json(result);
 		} else {
 		    // Success.
-		    // console.log(result);
 		    if(results.affectedRows === 1) {
 			result.insertId = results.insertId;
 		    }
@@ -249,14 +244,12 @@ function updateUserInfo(userInfo, response){
 	    updateQuery,
 	    [userInfo, userInfo.id],
 	    function (error, results, fields) {
-		//console.log(error);
 
 		if(error) {
 		    result.error = handleError(error);
 		    response.json(result);
 		} else {
 		    // Success.
-		    // console.log(result);
 		    if(results.affectedRows === 1) {
 			result.insertId = results.insertId;
 		    }
