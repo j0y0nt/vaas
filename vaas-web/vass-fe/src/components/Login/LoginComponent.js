@@ -14,10 +14,12 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import { client } from '../../Api.js';
+import Alert from '@mui/material/Alert';
 
 export default function LoginComponent({user, setUser}){
     const [, setSignup] = useState(false);
-    
+    const [error, setError] = useState(false);
+    const [errMsg, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const validate = values => {
@@ -61,13 +63,18 @@ export default function LoginComponent({user, setUser}){
 		navigate("/home", {replace: true});
 	    })
 	    .catch(function (error) {
-		//console.log(error);
+		console.log('here ');
+		console.log(error.code);
 		setUser(state => {
 		    const user = Object.assign({}, state);
 		    user['authorized'] = false;
 		    user['email'] = userInfo.email;
 		    return user;
 		});
+		if(error.code === 'ECONNABORTED') {
+		    setErrorMessage(errMsg => "We're having diffuclty connecting to backend. Please try again or try again later if error continues.");
+		}
+		setError(error => true);
 		
 		navigate("/", {replace: true});
 	    });
@@ -126,7 +133,15 @@ export default function LoginComponent({user, setUser}){
 	    </FormControl>
 	    </Box>
             </Grid>
-
+	    { error && (
+	    <Grid item xs={12}>
+	    <Box style={{width: '100%'}}>
+            <Alert variant="outlined" severity="error">
+		    {errMsg}
+	</Alert>
+	    </Box>
+            </Grid>
+	    )}
 	    <>
 	    <Grid item xs={6}>
 	    <Box style={{width: '100%'}}>
