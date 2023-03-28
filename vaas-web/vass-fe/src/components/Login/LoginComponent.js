@@ -86,9 +86,10 @@ export default function LoginComponent({user, setUser}){
     }
     
     return (
-	    <Container style={{margin: '5px',padding: '10px', width: '500px'}}>
-	    
-	    <Box style={{display:'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20px'}}>
+	    <Container
+	style={{margin: '5px',padding: '10px', width: '500px'}}>
+	    <Box
+	style={{display:'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '20px'}}>
 	    <Avatar>
 	    <LockOutlinedIcon />
 	    </Avatar>
