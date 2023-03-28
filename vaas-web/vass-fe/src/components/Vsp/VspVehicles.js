@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,8 +8,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { client } from '../../Api.js';
 
 export default function VspVehicles() {
+    
+    const [vehicles, setVehicles] = useState([]);
+
+    useEffect(() => {
+	let ignore = false;
+	setVehicles(vehicles);
+	client.get('/vehicles/')
+	    .then(function (response) {
+		if (!ignore) {
+		    setVehicles(response.data);
+		}
+	    })
+	    .catch(function (error) {
+		console.log(error);
+	    });
+	return () => {
+	    ignore = true;
+	}
+    }, []);
 
     const columns = [
 	{ id: 'brand', label: 'Brand', minWidth: 100 },
@@ -29,28 +50,6 @@ export default function VspVehicles() {
 	},
     ];
     
-    function createData(brand, model, rn, distance) {
-	return { brand, model, rn, distance};
-    }
-
-    const rows = [
-	createData('Tata', 'Indica', 'TA IND 1354', 7263),
-	createData('Tata', 'Safari', 'TA SFR 0365', 6961),
-	createData('Maruti', 'Alto', 'MA ALT 3973', 1340),
-	createData('Maruti', 'WagonR', 'MA WGR 7434', 98335),
-	createData('Maruti', 'Swift', 'MA SFT 2103', 9970),
-	createData('Maruti', 'Dezire', 'MA DZR 5400', 7024),
-	createData('Hyundai', 'Grand i10', 'HY I10 9200', 5758),
-	createData('Hyundai', 'i20', 'HY I20 7000', 70273),
-	createData('Hyundai', 'Verna', 'HY VRN 7691', 1950),
-	createData('Hyundai', 'Tucson', 'HY TSN 7020', 3973),
-	createData('Honda', 'City', 'HND CTY 2022', 6719),
-	createData('Honda', 'Amaze', 'HND AMZ 5757', 2495),
-	createData('Honda', 'WR-V', 'HND WRV 3744', 17046),
-	createData('Toyota', 'Glanza', 'TYT GLN 2417', 9368),
-	createData('Toyota', 'Fortuner', 'TYT FRT 7125', 85767),
-    ];
-
     function VehicleTable() {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -82,11 +81,11 @@ export default function VspVehicles() {
 			    </TableRow>
 			</TableHead>
 			<TableBody>
-			    {rows
+			    {vehicles
 			     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 			     .map((row) => {
 				 return (
-				     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+				     <TableRow hover role="checkbox" tabIndex={-1} key={row.rn}>
 					 {columns.map((column) => {
 					     const value = row[column.id];
 					     return (
@@ -106,7 +105,7 @@ export default function VspVehicles() {
 		<TablePagination
 		    rowsPerPageOptions={[10, 25, 100]}
 		    component="div"
-		    count={rows.length}
+		    count={vehicles.length}
 		    rowsPerPage={rowsPerPage}
 		    page={page}
 		    onPageChange={handleChangePage}
