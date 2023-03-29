@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
 		    {
 			path: "bookings",
 			element: <VspBookings />,
-		    }
+		    },	   
 		],
 	    },
 	    {
@@ -37,9 +37,10 @@ export const router = createBrowserRouter([
 		element: <Signup />,
 	    },
 	    {
-		path: "profile",
-		element: <UserProfile />,
+		 path: "profile",
+		 element: <UserProfile />,
 	    },
+	   
 	],
     },
 ]);

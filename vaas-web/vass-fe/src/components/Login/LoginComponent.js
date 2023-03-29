@@ -55,9 +55,8 @@ export default function LoginComponent({user, setUser}){
 	    .then(function (response) {
 
 		setUser(state => {
-		    const user = Object.assign({}, state);
-		    user['authorized'] = response.data.authorized;
-		    user['email'] = userInfo.email;
+		    const user = response.data;
+		    //console.log(response.data);
 		    navigate("/home", {state: {user: user}}, {replace: true});
 		    return user;
 		});
@@ -71,7 +70,7 @@ export default function LoginComponent({user, setUser}){
 		    return user;
 		});
 		if(error.code === 'ECONNABORTED') {
-		    setErrorMessage(errMsg => "We're having diffuclty connecting to backend. Please try again or try again later if error continues.");
+		    setErrorMessage(errMsg => "We're having difficulty connecting to our server. Please try again or try again later if error continues.");
 		}
 		setError(error => true);
 		

@@ -12,6 +12,7 @@ import { client } from '../../Api.js';
 import { useFormik } from 'formik';
 
 export default function UserProfile() {
+
     const userProfile = {
 	first_name: '',
 	middle_name: '',
@@ -100,7 +101,7 @@ export default function UserProfile() {
     
     useEffect(() => {
 	let ignore = false;
-	setUserInfo(userProfile);
+	setUserInfo({});
 	client.get('/users/info/1')
 	    .then(function (response) {
 		if (!ignore) {

@@ -16,7 +16,7 @@ export default function VspVehicles() {
 
     useEffect(() => {
 	let ignore = false;
-	setVehicles(vehicles);
+	setVehicles([]);
 	client.get('/vehicles/')
 	    .then(function (response) {
 		if (!ignore) {

@@ -59,7 +59,7 @@ function handleError(err) {
 function isAuthorized(userInfo, response){
     let result = {};
     const pw = encodePassword(userInfo.password);
-    var userQuery = "SELECT `email`, `password` FROM `system_user` WHERE `email` = ?";
+    var userQuery = "SELECT `id`, `username`, `email`, `password` FROM `system_user` WHERE `email` = ?";
     try {
 	pool.getConnection(function(err, connection) {
 	
@@ -70,13 +70,16 @@ function isAuthorized(userInfo, response){
 	    userQuery,
 	    [userInfo.email],
 	    function (error, results, fields) {
+		console.log(error);
 		if(error){
 		    result.error = handleError(error);
 		    response.json(result);
 		    
-		} else {
-		    result.authorized = (results[0].email === userInfo.email &&
-					 results[0].password === pw);
+		} else if(results[0].email === userInfo.email &&
+			  results[0].password === pw) {
+		    delete results[0].password;
+		    result.authorized = true;
+		    result.user = results[0];
 		    response.json(result);
 		}
 

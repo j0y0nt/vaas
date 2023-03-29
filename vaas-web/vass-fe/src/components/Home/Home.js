@@ -4,11 +4,11 @@ import { useLocation } from 'react-router-dom';
 
 export default function Home() {
     const { state } = useLocation();
-    console.log(state.user);
+   // console.log(state);
     
     return (
 	    <Container>
-	    <Outlet />
+	    <Outlet context={[state.user]} />
 	</Container>
     );
 }

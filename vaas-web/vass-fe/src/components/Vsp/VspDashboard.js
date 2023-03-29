@@ -8,9 +8,11 @@ import VspEarnings from '../Vsp/VspEarnings.js';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import { useOutletContext } from 'react-router-dom';
+import Paper from '@mui/material/Paper';
 
 export default function VspDashboard() {
-
+    const [user] = useOutletContext();
     const [value, setValue] = React.useState('1');
 
     const handleChange = (event, newValue) => {
@@ -20,6 +22,13 @@ export default function VspDashboard() {
     function VspTabs() {
 
 	return (
+	    <>
+		<Box style={{paddingTop: '10px'}}>
+		    <Paper style={{height: 60, width: 100, display: 'flex',
+				   alignItems: 'center', 
+				   justifyContent: 'center', marginX: 5}}>Hi, {user.username}
+		    </Paper>
+		</Box>
 	    <TabContext value={value}>
 		<Box
 		    sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -40,6 +49,7 @@ export default function VspDashboard() {
 		    <VspEarnings />
 		</TabPanel>
 	    </TabContext>
+	    </>
 	);
     }
     

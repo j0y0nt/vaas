@@ -76,7 +76,7 @@ export default function VaasAppBar({user, setUser}) {
 				onClose={handleClose}
 			    >
 				<MenuItem onClick={handleClose}
-					  component={RouterLink} to="/profile" >
+					  component={RouterLink} to="profile" >
 				    Profile
 				</MenuItem>
 				<MenuItem onClick={handleLogout}>Logout</MenuItem>
