@@ -61,7 +61,7 @@ export default function SignupComponent({user, setUser}){
     
     function registerUser(userInfo) {
 	delete userInfo["confirm_password"];
-	userInfo.username = "user1234";
+	userInfo.username = 'user' + Math.random().toString(36).slice(2, 10);
 	client.post('/users/register', userInfo)
 	    .then(function (response) {
 		console.log(response);
@@ -69,7 +69,7 @@ export default function SignupComponent({user, setUser}){
 	    .catch(function (error) {
 		console.log(error);
 	    });
-	navigate("/home", {replace: true});
+	navigate("/", {replace: true});
     }
     
     return (

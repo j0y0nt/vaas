@@ -15,10 +15,13 @@ import { useLocation } from 'react-router-dom';
 
 export function UserInfoForm({userInfo, setUserInfo}) {
 
-    const [save, setSave] = useState(false);
+    // First name is required field. If not exist, make `POST` request.
+    const [save, setSave] = useState(userInfo.first_name.length === 0);
+
+    // Get userId from react-router.
     const { state } = useLocation();
-    //console.log(state);
     const [userId, setUserId] = useState(state[0].user.id);
+
     const userProfile = {
 	first_name: '',
 	middle_name: '',
@@ -102,14 +105,15 @@ export function UserInfoForm({userInfo, setUserInfo}) {
 	onSubmit: values => updateUserInfo(values),
     });
 
-        function updateUserInfo(userData) {
-	console.log('save ' + save);
+    function updateUserInfo(userData) {
+
 	if(save) {
 	    client.post('/users/info/' + userId, userData)
 	    .then(function (response) {
-		setUserInfo(userProfile);
-		setUserInfo(response.data);
-		setUserId(userId => userId);
+		//setUserInfo(userProfile);
+		//setUserInfo(response.data);
+		//setUserId(userId => userId);
+		setSave(state => false);
 	    })
 	    .catch(function (error) {
 		console.log(error);

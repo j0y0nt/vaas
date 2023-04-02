@@ -14,10 +14,9 @@ import { UserInfoForm } from './UserInfoForm.js';
 
 export default function UserProfile() {
     const [edit, setEdit] = useState(false);
-    const [save, setSave] = useState(false);
     const { state } = useLocation();
     //console.log(state);
-    const [userId, setUserId] = useState(state[0].user.id);
+    const [userId, ] = useState(state[0].user.id);
 
     const userProfile = {
 	first_name: '',
@@ -37,12 +36,13 @@ export default function UserProfile() {
 	//setUserInfo(userProfile);
 	client.get('/users/info/' + userId)
 	    .then(function (response) {
-		if (!ignore) {
+
+		if (!ignore && response.data.length !== 0) {
 		    setUserInfo(response.data);
-		    setSave(save => false);
 		}
 	    })
 	    .catch(function (error) {
+		// request failed. Inform user.
 		console.log(error);
 	    });
 	return () => {
@@ -64,7 +64,8 @@ export default function UserProfile() {
 	    </Box>
 	    { edit ?
 	      (
-		      <UserInfoForm userInfo={userInfo} setUserInfo={setUserInfo} />
+		      <UserInfoForm userInfo={userInfo} setUserInfo={setUserInfo}
+		   />
               )
 	      :
 	      (
