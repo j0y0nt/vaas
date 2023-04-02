@@ -1,0 +1,17 @@
+.UserInfoDiv {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    line-height: 28px;
+}
+
+.UserInfoDiv div{
+    margin: 5px;
+    align-items: center;
+    display: flex;
+    min-width: 180px;
+    height: 36px;
+    line-height: 28px;
+    text-align: center;
+    padding-left: 10px;
+}
