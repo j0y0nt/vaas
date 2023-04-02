@@ -39,7 +39,7 @@ function getColumnName(msg) {
     }
 }
 
-function handleError(err) {
+function handleError(error) {
     let errorMessage = '';
     if(error.code === 'ER_DUP_ENTRY') {
 	let errColName = getColumnName(error.sqlMessage);
@@ -146,7 +146,7 @@ function registerUser(userInfo, response){
  */
 function getUserInfo(userId, response){
     let result = {};
-    var insertQuery = 'SELECT id, first_name, middle_name, last_name, prefix, suffix, gender,' +
+    var selectQuery = 'SELECT id, first_name, middle_name, last_name, prefix, suffix, gender,' +
 	' primary_contact, secondary_contact, user_id' +
 	' FROM userinfo WHERE user_id = ?;'
 
@@ -157,7 +157,7 @@ function getUserInfo(userId, response){
  
 	// Use the connection
 	connection.query(
-	    insertQuery,
+	    selectQuery,
 	    [userId],
 	    function (error, results, fields) {
 
@@ -190,11 +190,13 @@ function getUserInfo(userId, response){
 /**
  * Register new user.
  */
-function saveUserInfo(userInfo, response){
+function saveUserInfo(userId, userInfo, response){
     let result = {};
-    var insertQuery = 'INSERT INTO `userinfo` SET ?';
+    userInfo.user_id = userId;
     userInfo.tenant_id = 1;
-    userInfo.user_id = 1;
+    
+    var insertQuery = 'INSERT INTO `userinfo` SET ?';
+
     try {
 	pool.getConnection(function(err, connection) {
 	
@@ -233,10 +235,11 @@ function saveUserInfo(userInfo, response){
 }
 
 function updateUserInfo(userInfo, response){
+    console.log(userInfo);
     let result = {};
     var updateQuery = 'UPDATE `userinfo` SET ? WHERE ID = ?';
     userInfo.tenant_id = 1;
-    userInfo.user_id = 1;
+
     try {
 	pool.getConnection(function(err, connection) {
 	

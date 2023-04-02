@@ -32,6 +32,10 @@ export default function VaasAppBar({user, setUser}) {
 	navigate("/", {replace: true});
     };
 
+    const LinkBehavior = React.forwardRef((props, ref) => (
+	<RouterLink ref={ref} to="profile" {...props} state={[user]} />
+    ));
+
     return (
 	<Box sx={{ flexGrow: 1 }}>
 	    <AppBar position="static">
@@ -76,7 +80,7 @@ export default function VaasAppBar({user, setUser}) {
 				onClose={handleClose}
 			    >
 				<MenuItem onClick={handleClose}
-					  component={RouterLink} to="profile" >
+					  component={LinkBehavior} >
 				    Profile
 				</MenuItem>
 				<MenuItem onClick={handleLogout}>Logout</MenuItem>

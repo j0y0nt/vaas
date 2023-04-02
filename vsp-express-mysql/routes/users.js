@@ -41,9 +41,10 @@ router.put('/info/:userId', (req, res, next) => {
 })
 
 
-router.post('/info/', (req, res, next) => {
+router.post('/info/:userId', (req, res, next) => {
     try {
-	db.saveUserInfo(req.body, res);
+	const userId = Number(req.params.userId);
+	db.saveUserInfo(userId, req.body, res);
     } catch(err) {
 	console.log('Error while saving user info: ' + err);
     }

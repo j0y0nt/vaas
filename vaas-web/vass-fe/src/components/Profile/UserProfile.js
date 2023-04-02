@@ -10,9 +10,14 @@ import Button from '@mui/material/Button';
 import { VassFormikTextField , VassFormikSelectField }from '../../components/common/VaasComponents.js';
 import { client } from '../../Api.js';
 import { useFormik } from 'formik';
+import { useLocation } from 'react-router-dom';
 
 export default function UserProfile() {
-
+    const [save, setSave] = useState(false);
+    const { state } = useLocation();
+    //console.log(state);
+    const [userId, setUserId] = useState(state[0].user.id);
+    
     const userProfile = {
 	first_name: '',
 	middle_name: '',
@@ -101,11 +106,12 @@ export default function UserProfile() {
     
     useEffect(() => {
 	let ignore = false;
-	setUserInfo({});
-	client.get('/users/info/1')
+	//setUserInfo(userProfile);
+	client.get('/users/info/' + userId)
 	    .then(function (response) {
 		if (!ignore) {
 		    setUserInfo(response.data);
+		    setSave(save => false);
 		}
 	    })
 	    .catch(function (error) {
@@ -114,10 +120,22 @@ export default function UserProfile() {
 	return () => {
 	    ignore = true;
 	}
-    }, []);
+    }, [userId]);
     
     function updateUserInfo(userData) {
-	client.put('/users/info/1', userData)
+	console.log('save ' + save);
+	if(save) {
+	    client.post('/users/info/' + userId, userData)
+	    .then(function (response) {
+		setUserInfo(userProfile);
+		setUserInfo(response.data);
+		setUserId(userId => userId);
+	    })
+	    .catch(function (error) {
+		console.log(error);
+	    });
+	} else {
+	    client.put('/users/info/' + userId, userData)
 	    .then(function (response) {
 		setUserInfo(userProfile);
 		setUserInfo(response.data);
@@ -125,6 +143,8 @@ export default function UserProfile() {
 	    .catch(function (error) {
 		console.log(error);
 	    });
+	}
+	
     }
 
     return (
@@ -133,7 +153,7 @@ export default function UserProfile() {
 	    <Box style={{display:'flex', flexDirection: 'column',
 			 alignItems: 'center', paddingTop: '20px'}}>
 	    <Typography variant="h5">
-	    Welcome user!
+	    Welcome {state[0].user.username}.
 	</Typography>
 	    </Box>
 
